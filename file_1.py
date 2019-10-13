@@ -29,27 +29,27 @@ while run:
 
     keys = pygame.key.get_pressed()
 
-    # if keys[pygame.K_LEFT]:
-    #     x -= vel
-    # if keys[pygame.K_RIGHT]:
-    #     x += vel
-    # if keys[pygame.K_UP]:
-    #     y -= vel
-    # if keys[pygame.K_DOWN]:
-    #     y += vel
+    if keys[pygame.K_LEFT]:
+        x -= vel
+    if keys[pygame.K_RIGHT]:
+        x += vel
+    if keys[pygame.K_UP]:
+        y -= vel
+    if keys[pygame.K_DOWN]:
+        y += vel
     key = random.randint(1,5)
 
     if key == 1:
-        rgb_col = [0, 255, 0]
+        # rgb_col = [0, 255, 0]
         x -= vel
     if key == 2:
-        rgb_col = [255, 0, 0]
+        # rgb_col = [255, 0, 0]
         x += vel
     if key == 3:
-        rgb_col = [0, 0, 255]
+        # rgb_col = [0, 0, 255]
         y -= vel
     if key == 4:
-        rgb_col = [255, 255, 255]
+        # rgb_col = [255, 255, 255]
         y += vel
 
 
