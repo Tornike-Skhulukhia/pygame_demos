@@ -36,6 +36,7 @@ class Snake:
                     {"x": 180, "y": 200}]  # snake coordinates
         self.delay = delay
         self.direction = direction
+        self.food_location = None
 
 
 
@@ -60,13 +61,14 @@ class Snake:
             # clear the screen
             self.window.fill((0,0,0))
             # draw the snake
-            self.draw_snake()
+            self.draw_game()
             # breakpoint()
 
             # get pressed key
             keys = pygame.key.get_pressed()            
             # we care about direction keys only(yet)
             self._update_snake_coordinates(keys)
+            self.handle_food_eating()
 
             
             pygame.display.update()
@@ -129,7 +131,7 @@ class Snake:
         #     # print("y <  0")
         #     self.direction = "down"
 
-    def draw_snake(self):
+    def draw_game(self):
         # draw all snake points
         for index, point in enumerate(self.coords):
             pygame.draw.rect(
@@ -137,11 +139,64 @@ class Snake:
                 self.color if index % 2 == 0 else self.color_2,
                 (point['x'], point['y'], self.thickness, self.thickness))
 
-    def draw_food():
+        self.draw_food()            
+
+
+    def _get_random_color(self):
         '''
-            
+        get random rgb value tuple        
+        '''
+        return random.sample(range(0, 255, 10), 3)
+
+    def _get_food_location(self):
+        '''
+        returns new random food location(excluding snake points)
+        '''
+        location = {
+            "x": random.choice(range(0, 500, self.speed)),
+            "y": random.choice(range(0, 500, self.speed)),
+        }
+
+        # breakpoint()
+        while location['x'] in [p['x'] for p in self.coords]:
+            location['x'] = random.choice(range(0, 500, self.speed))
+
+        while location['y'] in [p['y'] for p in self.coords]:
+            location['y'] = random.choice(range(0, 500, self.speed))
+
+        return location
+
+
+    def draw_food(self):
+        '''
+            draw food in random places(beside our snake body).
+            food will have same width & height as snake.
         ''' 
-        pass
+        if self.food_location is None:
+            self.food_color = self._get_random_color()
+            self.food_location = self._get_food_location()
+
+        # draw food
+        pygame.draw.rect(
+            self.window,
+            self.food_color,
+            (self.food_location['x'],
+             self.food_location['y'],
+             self.thickness,
+             self.thickness))
+
+    def handle_food_eating(self):
+        '''
+        update things if food was eaten
+        '''
+        # if we are at exact food location
+        if (self.food_location['x'] == self.coords[0]['x']
+            and self.food_location['y'] == self.coords[0]['y']):
+            self.coords.insert(0, self.food_location)
+            self.food_location = None
+
+
+
 
 
 # test
