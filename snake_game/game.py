@@ -1,6 +1,5 @@
 '''
-    Define OOP method to play 
-    simple snake game.
+    simple snake game with very basic functionality.
 '''
 import pygame
 import random
