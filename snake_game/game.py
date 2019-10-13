@@ -37,8 +37,8 @@ class Snake:
         self.thickness = thickness
         self.speed = speed
         self.coords = [
-                    # {"x": 300, "y":200},
-                    # {"x": 310, "y": 200},
+                    {"x": 300, "y":200},
+                    {"x": 310, "y": 200},
                     {"x": 320, "y": 200}]  # snake coordinates
         self.delay = delay
         self.direction = direction
@@ -206,7 +206,6 @@ class Snake:
 
             # test - changes snake color too eaten food color
             # self.color = self.food_color
-            self.speed += 10
 
 
 
