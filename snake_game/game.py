@@ -5,11 +5,15 @@
 import pygame
 import random
 
+# define colors
+RED = (255, 0, 0)
+GREEN = (0, 255, 0)
+BLUE = (0, 0, 255)
+
 
 class Snake:
     def __init__(self,
-                 color=(255, 0, 0),
-                 color_2=(200, 0, 0),
+                 color=BLUE,
                  thickness=10,
                  speed=10,
                  delay=50,
@@ -17,23 +21,25 @@ class Snake:
         '''
         Initialize object with given parameters:
             1. color - color(rgb tuple) for snake(default=(255, 0, 0) - red)
-            2. color_2 - second color(rgb tuple) for snake
-                            (default=(200, 0, 0) - less red)
-            3. thickness - how thick it will be (default=3)
-            4. speed - how fast will it move (default=5)
-            5. delay - pygame delay (default=50)
-            6. direction to move towards initially)(default="right")
+            2. thickness - how thick it will be (default=3)
+            3. speed - how fast will it move (default=5)
+            4. delay - pygame delay (default=50)
+            5. direction to move towards initially)(default="right")
         '''
         self.color = color
-        self.color_2 = color_2
+
+        # color to make snake parts more visible
+        color_2 = [0, 0, 0]
+        color_2[color.index(255)] = 255 - 55 # 10 - color difference
+        self.color_2 = tuple(color_2)
+        # print(self.color_2)
+
         self.thickness = thickness
         self.speed = speed
         self.coords = [
-                    {"x": 220, "y":200},
-                    {"x": 210, "y":200},
-                    {"x": 200, "y":200},
-                    {"x": 190, "y": 200},
-                    {"x": 180, "y": 200}]  # snake coordinates
+                    # {"x": 300, "y":200},
+                    # {"x": 310, "y": 200},
+                    {"x": 320, "y": 200}]  # snake coordinates
         self.delay = delay
         self.direction = direction
         self.food_location = None
@@ -69,7 +75,6 @@ class Snake:
             # we care about direction keys only(yet)
             self._update_snake_coordinates(keys)
             self.handle_food_eating()
-
             
             pygame.display.update()
         pygame.quit()
@@ -115,21 +120,25 @@ class Snake:
             self.coords[0]['y'] -= self.speed
         elif self.direction == "down":
             self.coords[0]['y'] += self.speed
-        print(self.coords)
-        # print(self.coords, self.direction)
-        # # change direction if wall was there
-        # if self.x >= 500:
-        #     self.direction = "left"
-        # elif self.x <= 0:
-        #     # print("x < 0")
-        #     self.direction = "right"
-        #     # breakpoint()
-        # elif self.y >= 500:
-        #     # print("y >  500")
-        #     self.direction = "up"
-        # elif self.y <= 0:
-        #     # print("y <  0")
-        #     self.direction = "down"
+
+        print(self.coords, self.direction)
+        # move from another side wall if needed
+        if self.coords[0]['x'] >= 500:
+            # self.direction = "left"
+            self.coords[0]['x'] = -10
+            # print(self.coords, self.direction)
+            # breakpoint()
+
+        elif self.coords[0]['x'] <= -10:
+            # self.direction = "right"
+            self.coords[0]['x'] = 500
+        elif self.coords[0]['y'] >= 500:
+            # self.direction = "up"
+            self.coords[0]['y'] = -10
+        elif self.coords[0]['y'] <= -10:
+            # self.direction = "down"
+            self.coords[0]['y'] = 500
+        # breakpoint()
 
     def draw_game(self):
         # draw all snake points
@@ -194,6 +203,10 @@ class Snake:
             and self.food_location['y'] == self.coords[0]['y']):
             self.coords.insert(0, self.food_location)
             self.food_location = None
+
+            # test - changes snake color too eaten food color
+            # self.color = self.food_color
+            self.speed += 10
 
 
 
